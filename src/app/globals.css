@@ -1,0 +1,252 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   Nimbu Paani design system
+   Colour is taken straight off the physical label — nothing arbitrary added.
+--------------------------------------------------------------------------- */
+
+@theme {
+  --color-lime: #c7ff24;
+  --color-emerald: #009b63;
+  --color-forest: #043729;
+  --color-cream: #f4f1df;
+  --color-signal: #e82924;
+  --color-ink: #07130d;
+
+  --font-display: var(--font-archivo-black), "Arial Black", "Helvetica Neue",
+    sans-serif;
+  --font-sans: var(--font-instrument-sans), ui-sans-serif, system-ui, sans-serif;
+
+  /* Deliberate, non-default easing. Used everywhere instead of ease-in-out. */
+  --ease-chill: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-squeeze: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-overshoot: cubic-bezier(0.34, 1.4, 0.44, 1);
+}
+
+@layer base {
+  :root {
+    color-scheme: dark;
+    --nav-h: 4.5rem;
+  }
+
+  * {
+    min-width: 0;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: auto;
+  }
+
+  body {
+    background-color: var(--color-forest);
+    color: var(--color-cream);
+    font-family: var(--font-sans);
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+  }
+
+  /* Lenis owns the scroll position; keep native smooth scrolling out of it. */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  ::selection {
+    background-color: var(--color-lime);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-lime);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.035em;
+    line-height: 0.86;
+    text-transform: uppercase;
+  }
+
+  img {
+    -webkit-user-drag: none;
+  }
+}
+
+@layer components {
+  /* Display scale — every headline size is fluid, none of them are guessed
+     twice. Sizes are tuned so the bottle always wins the composition. */
+  .t-mega {
+    font-family: var(--font-display);
+    font-size: clamp(2.9rem, 12.5vw, 12rem);
+    line-height: 0.82;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+  }
+  .t-xl {
+    font-family: var(--font-display);
+    font-size: clamp(2.6rem, 8.2vw, 7.5rem);
+    line-height: 0.86;
+    letter-spacing: -0.035em;
+    text-transform: uppercase;
+  }
+  .t-lg {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 4rem);
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+  }
+  .t-eyebrow {
+    font-family: var(--font-sans);
+    font-size: clamp(0.68rem, 0.9vw, 0.8rem);
+    font-weight: 600;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+  }
+  .t-body {
+    font-size: clamp(1rem, 1.25vw, 1.2rem);
+    line-height: 1.55;
+    letter-spacing: -0.005em;
+  }
+
+  /* Oversized outlined type, one accent per section.
+     The stroke colour cannot be `currentColor` — the fill is transparent, so
+     currentColor would resolve to transparent too. It is set explicitly. */
+  .t-outline {
+    color: transparent;
+    -webkit-text-stroke: clamp(1.5px, 0.19vw, 3px)
+      var(--outline-color, var(--color-cream));
+    paint-order: stroke fill;
+  }
+  .outline-cream {
+    --outline-color: var(--color-cream);
+  }
+  .outline-lime {
+    --outline-color: var(--color-lime);
+  }
+  .outline-emerald {
+    --outline-color: var(--color-emerald);
+  }
+  .outline-forest {
+    --outline-color: var(--color-forest);
+  }
+
+  /* Line mask: the child rides in from below inside a clipped row. */
+  .line-mask {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.06em;
+    margin-bottom: -0.06em;
+  }
+  .line-mask > span {
+    display: block;
+    will-change: transform;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.95rem 1.6rem;
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    border-radius: 999px;
+    transition:
+      background-color 0.4s var(--ease-chill),
+      color 0.4s var(--ease-chill),
+      transform 0.4s var(--ease-chill);
+  }
+  .btn-lime {
+    background-color: var(--color-lime);
+    color: var(--color-ink);
+  }
+  .btn-lime:hover {
+    transform: translateY(-2px);
+    background-color: #d8ff5c;
+  }
+  .btn-outline {
+    border: 1px solid color-mix(in srgb, var(--color-cream) 45%, transparent);
+    color: var(--color-cream);
+  }
+  .btn-outline:hover {
+    background-color: var(--color-cream);
+    color: var(--color-ink);
+  }
+
+  .rule {
+    height: 1px;
+    background-color: currentColor;
+    opacity: 0.35;
+    transform-origin: left center;
+  }
+
+  /* Film grain. Pure CSS, no bitmap request, sits above imagery and below type. */
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: -50%;
+    pointer-events: none;
+    opacity: 0.16;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
+  }
+
+  .edge-fade-b {
+    -webkit-mask-image: linear-gradient(to bottom, #000 72%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 72%, transparent 100%);
+  }
+}
+
+@layer utilities {
+  .grid-editorial {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: clamp(0.75rem, 1.6vw, 1.75rem);
+  }
+  .shell {
+    width: 100%;
+    max-width: 96rem;
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 4vw, 4rem);
+  }
+  .stack-layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Reduced motion: all scrubbed/looping motion is removed in JS as well, this
+   is the belt-and-braces CSS half. Content is never hidden by it.
+--------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.12s !important;
+  }
+  .ticker-track {
+    animation: none !important;
+    transform: none !important;
+  }
+}
